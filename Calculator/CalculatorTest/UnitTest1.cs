@@ -1,16 +1,23 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Calculator;
+using StringCalculator;
 
 namespace CalculatorTest
 {
     [TestClass]
     public class ExpressionsTest
     {
-        [TestMethod]
-        public void RegularExpression()
+        private Calculator calc;
+
+        public ExpressionsTest()
         {
-            Assert.AreEqual(4, Program.Calculate("2 + 2"));
+            calc = new Calculator();
+        }
+
+        [TestMethod]
+        public void PrimitiveExpression()
+        {
+            Assert.AreEqual(4, calc.Calculate("2 + 2"));
         }
     }
 }

@@ -1,0 +1,7 @@
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\CalculatorTest\bin\Debug\CalculatorTest.dll
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\CalculatorTest\bin\Debug\CalculatorTest.pdb
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\CalculatorTest\bin\Debug\Calculator.exe
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\CalculatorTest\bin\Debug\Calculator.pdb
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\CalculatorTest\obj\Debug\CalculatorTest.csprojResolveAssemblyReference.cache
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\CalculatorTest\obj\Debug\CalculatorTest.dll
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\CalculatorTest\obj\Debug\CalculatorTest.pdb
