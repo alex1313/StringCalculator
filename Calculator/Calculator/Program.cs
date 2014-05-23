@@ -17,6 +17,7 @@ namespace StringCalculator
             legalSymbols = new HashSet<string>();
             legalSymbols.UnionWith(operators);
             legalSymbols.Add("(");
+            legalSymbols.Add(",");
         }
 
         private int GetPriority(string c)
@@ -42,14 +43,14 @@ namespace StringCalculator
             s = s.Replace(" ", "");
             for (int i = 0; i < s.Length - 1; i++)
             {
-                if (isOperatorBefore && s[i] == '-')
+                if (isOperatorBefore && s[i] == '-' || s[i] == ',')
                     continue;
 
                 if (legalSymbols.Contains(s[i].ToString()))
                     isOperatorBefore = true;
                 else
                     isOperatorBefore = false;
-                if (!(Char.IsDigit(s[i]) && Char.IsDigit(s[i + 1])))
+                if (!(Char.IsDigit(s[i]) && (Char.IsDigit(s[i + 1]) || s[i + 1] == ',')))
                     s = s.Insert(i++ + 1, " ");
             }
             return s.Split();
@@ -57,12 +58,12 @@ namespace StringCalculator
 
         public string[] PolishNotation(string[] s)
         {
-            int tmp;
+            float tmp;
             string result = "";
             var stack = new Stack<string>();
             foreach (string element in s)
             {
-                if (int.TryParse(element, out tmp))
+                if (float.TryParse(element, out tmp))
                     result += element + " ";
                 else
                     if (operators.Contains(element))
@@ -101,17 +102,17 @@ namespace StringCalculator
             return result.Split(' ');
         }
 
-        private int CalculatePolishNotation(string[] s)
+        private float CalculatePolishNotation(string[] s)
         {
-            int tmp;
-            var stack = new Stack<int>();
+            float tmp;
+            var stack = new Stack<float>();
             foreach (string element in s)
             {
-                if (int.TryParse(element, out tmp))
-                    stack.Push(int.Parse(element));
+                if (float.TryParse(element, out tmp))
+                    stack.Push(float.Parse(element));
                 else
                 {
-                    int operand2 = stack.Pop(), operand1 = stack.Pop();
+                    float operand2 = stack.Pop(), operand1 = stack.Pop();
                     switch (element)
                     {
                         case "+":
@@ -132,7 +133,7 @@ namespace StringCalculator
             return stack.Pop();
         }
 
-        public int Calculate(string s)
+        public float Calculate(string s)
         {
             string[] result = PolishNotation(SplitExpression(s));
 
@@ -147,7 +148,7 @@ namespace StringCalculator
             string expression = Console.ReadLine();
 
             var calculator = new Calculator();
-            int result = calculator.Calculate(expression);
+            float result = calculator.Calculate(expression);
             Console.WriteLine("{0} = {1}", expression, result);
         }
     }

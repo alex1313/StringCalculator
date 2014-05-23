@@ -42,8 +42,16 @@ namespace CalculatorTest
         public void TestNegativeNumbers()
         {
             Assert.AreEqual(-4, calc.Calculate("-2 * (3 + -1)"));
-            Assert.AreEqual(6, calc.Calculate("2-2*-2"));
-            Assert.AreEqual(-1, calc.Calculate("2   + (-3 * 1)"));
+            Assert.AreEqual(46, calc.Calculate("2-22*-2"));
+            Assert.AreEqual(-64, calc.Calculate("2   * (-33 + 1)"));
+        }
+
+        [TestMethod]
+        public void TestFloatNumbers()
+        {
+            Assert.AreEqual(-4.62, Math.Round(calc.Calculate("-2,2 * (3,1 + -1)"), 2));
+            Assert.AreEqual(6.28, Math.Round(calc.Calculate("2-2,14*-2"), 2));
+            Assert.AreEqual(-1, calc.Calculate("2   + -3,3 / 1,1"));
         }
     }
 }
