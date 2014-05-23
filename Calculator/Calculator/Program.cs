@@ -8,7 +8,16 @@ namespace StringCalculator
 {
     public class Calculator
     {
-        private HashSet<string> operators = new HashSet<string>() {"+", "-", "*", "/"};
+        private readonly HashSet<string> operators;
+        private HashSet<string> legalSymbols;
+
+        public Calculator()
+        {
+            operators = new HashSet<string>() {"+", "-", "*", "/"};
+            legalSymbols = new HashSet<string>();
+            legalSymbols.UnionWith(operators);
+            legalSymbols.Add("(");
+        }
 
         private int GetPriority(string c)
         {
@@ -29,9 +38,17 @@ namespace StringCalculator
 
         public string[] SplitExpression(string s)
         {
+            bool isOperatorBefore = true;
             s = s.Replace(" ", "");
             for (int i = 0; i < s.Length - 1; i++)
             {
+                if (isOperatorBefore && s[i] == '-')
+                    continue;
+
+                if (legalSymbols.Contains(s[i].ToString()))
+                    isOperatorBefore = true;
+                else
+                    isOperatorBefore = false;
                 if (!(Char.IsDigit(s[i]) && Char.IsDigit(s[i + 1])))
                     s = s.Insert(i++ + 1, " ");
             }
@@ -40,11 +57,12 @@ namespace StringCalculator
 
         public string[] PolishNotation(string[] s)
         {
+            int tmp;
             string result = "";
             var stack = new Stack<string>();
             foreach (string element in s)
             {
-                if (Char.IsDigit(element[0]))
+                if (int.TryParse(element, out tmp))
                     result += element + " ";
                 else
                     if (operators.Contains(element))
@@ -85,10 +103,11 @@ namespace StringCalculator
 
         private int CalculatePolishNotation(string[] s)
         {
+            int tmp;
             var stack = new Stack<int>();
             foreach (string element in s)
             {
-                if (Char.IsDigit(element[0]))
+                if (int.TryParse(element, out tmp))
                     stack.Push(int.Parse(element));
                 else
                 {
