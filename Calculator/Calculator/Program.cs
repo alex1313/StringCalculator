@@ -8,72 +8,56 @@ namespace StringCalculator
 {
     public class Calculator
     {
-        private readonly HashSet<string> operators;
-        private HashSet<string> legalSymbols;
-
-        public Calculator()
+        private readonly static Dictionary<string, int> Operators = new Dictionary<string, int>()
         {
-            operators = new HashSet<string>() {"+", "-", "*", "/"};
-            legalSymbols = new HashSet<string>();
-            legalSymbols.UnionWith(operators);
-            legalSymbols.Add("(");
-            legalSymbols.Add(",");
-        }
-
-        private int GetPriority(string c)
-        {
-            switch (c)
+            {"+", 2},
+            {"-", 2},
+            {"*", 3},
+            {"/", 3}
+        };
+        private readonly static Dictionary<string, int> LegalSymbols = new Dictionary<string, int>(Operators)
             {
-                case "*":
-                case "/":
-                    return 3;
-                case "+":
-                case "-":
-                    return 2;
-                case "(":
-                    return 1;
-                default:
-                    return 0;
-            }
-        }
+                {"(", 1},
+                {",", 0}
+            };
+        private readonly static Dictionary<string, int> AllSymbols = new Dictionary<string, int>(LegalSymbols) { {")", 0} };
 
-        public string[] SplitExpression(string s)
+        public string[] SplitExpression(string expression)
         {
             bool isOperatorBefore = true;
-            s = s.Replace(" ", "");
-            for (int i = 0; i < s.Length - 1; i++)
+            expression = expression.Replace(" ", "");
+            for (int i = 0; i < expression.Length - 1; i++)
             {
-                if (isOperatorBefore && s[i] == '-' || s[i] == ',')
-                    continue;
-
-                if (legalSymbols.Contains(s[i].ToString()))
-                    isOperatorBefore = true;
-                else
-                    isOperatorBefore = false;
-                if (!(Char.IsDigit(s[i]) && (Char.IsDigit(s[i + 1]) || s[i + 1] == ',')))
-                    s = s.Insert(i++ + 1, " ");
+                if (!(isOperatorBefore && expression[i] == '-' || expression[i] == ','))
+                {
+                    isOperatorBefore = LegalSymbols.Keys.Contains(expression[i].ToString());
+                    if (!(Char.IsDigit(expression[i]) && (Char.IsDigit(expression[i + 1]) || expression[i + 1] == ',')))    //Don't split numbers
+                    {
+                        expression = expression.Insert(i++ + 1, " ");
+                    }
+                }
             }
-            return s.Split();
+            return expression.Split();
         }
 
-        public string[] PolishNotation(string[] s)
+        public string[] PolishNotation(string[] infix)
         {
-            float tmp;
             string result = "";
             var stack = new Stack<string>();
-            foreach (string element in s)
+            foreach (string element in infix)
             {
+                float tmp;
                 if (float.TryParse(element, out tmp))
                     result += element + " ";
                 else
-                    if (operators.Contains(element))
+                    if (Operators.Keys.Contains(element))
                         //If stack is empty or symbol's priority is less than top's of stack priority
-                        if (stack.Count == 0 || GetPriority(stack.Peek()) < GetPriority(element))
+                        if (stack.Count == 0 || AllSymbols[stack.Peek()] < AllSymbols[element])
                             stack.Push(element);
                         else
                         {
                             //Pop from stack to string until stack is empty or find element of stack with higher priority than element's priority
-                            while (stack.Count != 0 && GetPriority(stack.Peek()) >= GetPriority(element))
+                            while (stack.Count != 0 && AllSymbols[stack.Peek()] >= AllSymbols[element])
                                 result += stack.Pop() + " ";
                             stack.Push(element);
                         }
@@ -91,23 +75,23 @@ namespace StringCalculator
                             case " ":
                                 break;
                             default:
-                                Console.WriteLine("Unknown symbol was detected!");
+                                Console.WriteLine("Unknown symbol was detected! The answer could be wrong!");
                                 break;
                         }
             }
 
             while (stack.Count > 0)
                 result += stack.Pop() + " ";
-            result = result.Remove(result.Length - 1);
+            result = result.Remove(result.Length - 1);  //Remove last space
             return result.Split(' ');
         }
 
-        private float CalculatePolishNotation(string[] s)
+        private float CalculatePolishNotation(IEnumerable<string> postfix)
         {
-            float tmp;
             var stack = new Stack<float>();
-            foreach (string element in s)
+            foreach (string element in postfix)
             {
+                float tmp;
                 if (float.TryParse(element, out tmp))
                     stack.Push(float.Parse(element));
                 else
@@ -133,9 +117,9 @@ namespace StringCalculator
             return stack.Pop();
         }
 
-        public float Calculate(string s)
+        public float Calculate(string expression)
         {
-            string[] result = PolishNotation(SplitExpression(s));
+            string[] result = PolishNotation(SplitExpression(expression));
 
             return CalculatePolishNotation(result);
         }
@@ -145,6 +129,7 @@ namespace StringCalculator
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Input your expression:");
             string expression = Console.ReadLine();
 
             var calculator = new Calculator();
