@@ -1,0 +1,5 @@
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\Calculator\bin\Debug\Calculator.exe.config
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\Calculator\bin\Debug\Calculator.exe
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\Calculator\bin\Debug\Calculator.pdb
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\Calculator\obj\Debug\Calculator.exe
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\Calculator\obj\Debug\Calculator.pdb
