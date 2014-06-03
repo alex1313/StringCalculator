@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StringCalculator;
 
 namespace StringCalculator
 {
@@ -38,6 +35,7 @@ namespace StringCalculator
                     result += element + " ";
                 else
                     if (Operators.OperatorsPriority.Keys.Contains(element))
+                    {
                         //If stack is empty or symbol's priority is less than top's of stack priority
                         if (stack.Count == 0 || Operators.AllSymbolsPriority[stack.Peek()] < Operators.AllSymbolsPriority[element])
                             stack.Push(element);
@@ -48,6 +46,7 @@ namespace StringCalculator
                                 result += stack.Pop() + " ";
                             stack.Push(element);
                         }
+                    }
                     else
                         switch (element)
                         {

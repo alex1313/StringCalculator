@@ -3,3 +3,4 @@ C:\Users\II\Documents\GitHub\SummerPractice\Calculator\Calculator\bin\Debug\Calc
 C:\Users\II\Documents\GitHub\SummerPractice\Calculator\Calculator\bin\Debug\Calculator.pdb
 C:\Users\II\Documents\GitHub\SummerPractice\Calculator\Calculator\obj\Debug\Calculator.exe
 C:\Users\II\Documents\GitHub\SummerPractice\Calculator\Calculator\obj\Debug\Calculator.pdb
+C:\Users\II\Documents\GitHub\SummerPractice\Calculator\Calculator\obj\Debug\StringCalculator.csprojResolveAssemblyReference.cache
