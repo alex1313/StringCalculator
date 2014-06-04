@@ -5,31 +5,30 @@ namespace StringCalculator
 {
     class Operators
     {
-        public readonly static Dictionary<string, int> OperatorsPriority = new Dictionary<string, int>()
+        public struct OperatorsDef
         {
-            {"+", 2},
-            {"-", 2},
-            {"*", 3},
-            {"/", 3},
+            public int Priority;
+
+            public Func<float, float, float> Execute;
+        }
+
+        public readonly static Dictionary<string, OperatorsDef> Operations = new Dictionary<string, OperatorsDef>()
+        {
+            {"+", new OperatorsDef() { Priority = 2, Execute = (x, y) => x + y } },
+            {"-", new OperatorsDef() { Priority = 2, Execute = (x, y) => x - y } },
+            {"*", new OperatorsDef() { Priority = 3, Execute = (x, y) => x * y } },
+            {"/", new OperatorsDef() { Priority = 3, Execute = (x, y) => x / y } },
         };
 
-        public readonly static Dictionary<string, int> LegalSymbolsPriority = new Dictionary<string, int>(OperatorsPriority)
+        public readonly static Dictionary<string, OperatorsDef> LegalSymbols = new Dictionary<string, OperatorsDef>(Operations)
         {
-            {"(", 1},
-            {",", 0},
+            {"(", new OperatorsDef() { Priority = 1 } },
+            {",", new OperatorsDef() { Priority = 0 } },
         };
 
-        public readonly static Dictionary<string, int> AllSymbolsPriority = new Dictionary<string, int>(LegalSymbolsPriority)
+        public readonly static Dictionary<string, OperatorsDef> AllSymbols = new Dictionary<string, OperatorsDef>(LegalSymbols)
         {
-            { ")", 0 }
-        };
-
-        public readonly static Dictionary<string, Func<float, float, float>> Operations = new Dictionary<string, Func<float, float, float>>
-        {
-            { "+", (x, y) => x + y },
-            { "-", (x, y) => x - y },
-            { "*", (x, y) => x * y },
-            { "/", (x, y) => x / y },
+            { ")", new OperatorsDef() { Priority = 0 } }
         };
     }
 }
