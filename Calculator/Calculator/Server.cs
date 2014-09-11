@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
@@ -45,12 +46,15 @@ namespace StringCalculator
                     Console.Write("Полученное выражение: " + expression + "\n\n");
 
                     var calculator = new Calculator();
-                    float result = calculator.Calculate(expression);
 
+                    string[] polishExpression = calculator.PolishNotation(calculator.SplitExpression(expression));
+                    string result = polishExpression.Aggregate("", (current, symbol) => current + symbol);
+                    result += "\n";
 
-                    // Отправляем ответ клиенту\
-                    string reply = result.ToString();
-                    byte[] msg = Encoding.UTF8.GetBytes(reply);
+                    result += calculator.Calculate(expression);
+
+                    // Отправляем ответ клиенту
+                    byte[] msg = Encoding.UTF8.GetBytes(result);
                     handler.Send(msg);
 
                     if (expression.IndexOf("<TheEnd>", System.StringComparison.Ordinal) > -1)
