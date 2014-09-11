@@ -8,17 +8,15 @@ namespace StringCalculator
     {
         public string[] SplitExpression(string expression)
         {
-            bool isOperatorBefore = true;
+            var isOperatorBefore = true;
             expression = expression.Replace(" ", "");
-            for (int i = 0; i < expression.Length - 1; i++)
+            for (var i = 0; i < expression.Length - 1; i++)
             {
-                if (!(isOperatorBefore && expression[i] == '-' || expression[i] == ','))
+                if (isOperatorBefore && expression[i] == '-' || expression[i] == ',') continue;
+                isOperatorBefore = Operators.LegalSymbols.Keys.Contains(expression[i].ToString());
+                if (!(Char.IsDigit(expression[i]) && (Char.IsDigit(expression[i + 1]) || expression[i + 1] == ',')))    //Don't split numbers
                 {
-                    isOperatorBefore = Operators.LegalSymbols.Keys.Contains(expression[i].ToString());
-                    if (!(Char.IsDigit(expression[i]) && (Char.IsDigit(expression[i + 1]) || expression[i + 1] == ',')))    //Don't split numbers
-                    {
-                        expression = expression.Insert(i++ + 1, " ");
-                    }
+                    expression = expression.Insert(i++ + 1, " ");
                 }
             }
             return expression.Split();
@@ -28,7 +26,7 @@ namespace StringCalculator
         {
             string result = "";
             var stack = new Stack<string>();
-            foreach (string element in infix)
+            foreach (var element in infix)
             {
                 float tmp;
                 if (float.TryParse(element, out tmp))
@@ -75,7 +73,7 @@ namespace StringCalculator
         private float CalculatePolishNotation(IEnumerable<string> postfix)
         {
             var stack = new Stack<float>();
-            foreach (string element in postfix)
+            foreach (var element in postfix)
             {
                 float tmp;
                 if (float.TryParse(element, out tmp))
@@ -91,7 +89,7 @@ namespace StringCalculator
 
         public float Calculate(string expression)
         {
-            string[] result = PolishNotation(SplitExpression(expression));
+            var result = PolishNotation(SplitExpression(expression));
 
             return CalculatePolishNotation(result);
         }
